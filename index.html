@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Invitation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Great+Vibes&family=Montserrat:wght@300;400&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body,
+        html {
+            height: 100%;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Phone Screen Container */
+        .phone-container {
+            width: 100vw;
+            height: 100vh;
+            max-width: 450px;
+            max-height: 900px;
+            background: #fff;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Wrapper për Zarfin */
+        .envelope-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            pointer-events: auto;
+        }
+
+        /* 1. KAPAKU */
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("fejesa.png");
+            background-size: cover;
+            background-position: center;
+            clip-path: polygon(100% 0, 100% 100%, 87% 100%, 41% 50%, 87% 0);
+            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+            z-index: 3;
+        }
+
+        /* 2. TRUPI I ZARFIT */
+        .envelope-body {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("fejesa.png");
+            background-size: cover;
+            background-position: center;
+            clip-path: polygon(0 0, 87% 0, 41% 50%, 87% 100%, 0 100%);
+            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+            z-index: 1;
+        }
+
+        /* VULA TRANSPARENTE */
+        .wax-seal {
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: transparent;
+            cursor: pointer;
+            z-index: 4;
+            top: 50%;
+            left: 48%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 15px rgba(223, 186, 107, 0.5);
+            animation: pulse 2s infinite;
+            transition: opacity 0.3s ease;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            50% {
+                transform: translate(-50%, -50%) scale(1.06);
+                box-shadow: 0 0 25px rgba(223, 186, 107, 0.8);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        /* ================= ANIMACIONET OUT OF FRAME ================= */
+        .opened .envelope-flap {
+            transform: translateX(120%);
+        }
+
+        .opened .envelope-body {
+            transform: translateX(-120%);
+        }
+
+        .opened .wax-seal {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .opened .envelope-wrapper {
+            pointer-events: none;
+        }
+
+        /* ================= INVITATION CONTENT ================= */
+        .invitation-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            color: #111;
+            overflow-y: auto;
+            z-index: 5;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+        }
+
+        .opened .invitation-container {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .invitation-content {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .couple-img {
+            width: 100%;
+            max-height: 350px;
+            object-fit: cover;
+            margin-bottom: 20px;
+            filter: none !important;
+        }
+
+        .main-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 38px;
+            font-weight: 300;
+            line-height: 1.1;
+            text-transform: capitalize;
+            margin-top: 10px;
+            color: #c5a850;
+        }
+
+        .ampersand {
+            font-family: 'Great Vibes', cursive;
+            font-size: 32px;
+            display: block;
+            margin: 5px 0;
+        }
+
+        .invite-text {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin: 25px 0;
+            color: #666;
+        }
+
+        .date-section {
+            border-top: 1px solid #111;
+            border-bottom: 1px solid #111;
+            padding: 15px 0;
+            margin: 20px auto;
+            width: 90%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .month-year {
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .day-num {
+            font-family: 'Cinzel', serif;
+            font-size: 40px;
+            font-weight: 400;
+            padding: 0 10px;
+            color: #c5a850;
+        }
+
+        .day-name,
+        .time-str {
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .location-text {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 15px 0 30px 0;
+            color: #333;
+        }
+
+        .map-btn {
+            display: inline-block;
+            background: #111;
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 30px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            transition: background 0.3s;
+        }
+
+        .map-btn:hover {
+            background: #444;
+        }
+
+        hr.divider {
+            border: 0;
+            height: 1px;
+            background: #ddd;
+            margin: 40px auto;
+            width: 60%;
+        }
+
+        /* ================= RSVP STYLING ================= */
+        .rsvp-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 34px;
+            margin-bottom: 15px;
+            /* Shtuar hapësirë sipër titullit të ri */
+            color: #c5a850;
+        }
+
+        .rsvp-large {
+            font-family: 'Cinzel', serif;
+            font-size: 22px;
+            /* Zvogluar që të qëndrojë pastër në një rresht */
+            letter-spacing: 3px;
+            /* Spacing elegant mes shkronjave */
+            line-height: 1.4;
+            margin-bottom: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .rsvp-date {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            /* Krijon distancë që butonat të marrin frymë */
+            color: #666;
+        }
+
+        .rsvp-buttons-container {
+            margin-top: 15px;
+            margin-bottom: 45px;
+            /* Hapësirë e shtuar para seksionit mbyllës */
+        }
+
+        .rsvp-btn {
+            display: inline-block;
+            padding: 11px 24px;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 4px;
+            /* Kthesa më moderne dhe luksoze */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            margin: 6px 8px;
+        }
+
+        .rsvp-yes {
+            background-color: #111;
+            color: white;
+        }
+
+        .rsvp-yes:hover {
+            background-color: #aa8c2c;
+        }
+
+        .rsvp-no {
+            background-color: #a0a0a0;
+            color: white;
+        }
+
+        .rsvp-no:hover {
+            background-color: #888888;
+        }
+
+        /* ================= SEKSIONI PËRMBYLLËS ================= */
+        .thank-you-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .thank-you-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .with-love-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #070705;
+            margin-bottom: 20px;
+        }
+
+        .couple-names-footer {
+            font-family: 'Great Vibes', cursive;
+            font-size: 38px;
+            color: #c5a850;
+        }
+
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <audio id="bg-music" src="muzika.mp3.mp3" loop></audio>
+
+    <div class="phone-container" id="mainContainer">
+
+        <div class="envelope-wrapper">
+            <div class="envelope-flap"></div>
+            <div class="envelope-body"></div>
+            <div class="wax-seal" onclick="openEnvelope()"></div>
+        </div>
+
+        <div class="invitation-container">
+            <div class="invitation-content">
+                <img class="couple-img" src="lulet.png" alt="Couple">
+
+                <h1 class="main-title">Elsa <span class="ampersand">&</span> Bleon</h1>
+
+                <p class="invite-text">Në emër të dashurisë dhe lumturisë sonë, kemi nderin t’ju ftojmë të festojmë së
+                    bashku ne fejesën tonë.</p>
+
+                <div class="month-year">Korrik 2026</div>
+                <div class="date-section">
+                    <div class="day-name">E Shtune</div>
+                    <div class="day-num">18</div>
+                    <div class="time-str">ora 19.00</div>
+                </div>
+
+                <p class="location-text">The Hills, Ferizaj</p>
+
+                <a href="http://maps.google.com/?q=The+Hills,+Ferizaj" target="_blank" class="map-btn">Hap lokacionin ne
+                    Google Maps</a>
+
+                <hr class="divider">
+
+                <div class="rsvp-title">Ju lutemi</div>
+                <div class="rsvp-large">Konfirmo pjesëmarrjen</div>
+                <div class="rsvp-date">Deri më 1 Korrik 2026</div>
+
+                <div class="rsvp-buttons-container">
+                    <a href="https://wa.me/358413155004?text=Përshëndetje!%20Konfirmoj%20me%20kënaqësi%20pjesëmarrjen%20në%20fejesën%20tuaj.%20Me%20respekt,%20[Shkruaj%20Emrin]"
+                        target="_blank" class="rsvp-btn rsvp-yes">
+                        Po, marr pjesë
+                    </a>
+
+                    <a href="https://wa.me/358413155004?text=Përshëndetje!%20Ju%20falënderoj%20shumë%20për%20ftesën.%20Për%20fat%20të%20keq%20nuk%20do%20të%20mund%20të%20marr%20pjesë,%20por%20ju%20uroj%20nga%20zemra%20jetë%20të%20lumtur%20së%20bashku!%20Me%20respekt,%20[Shkruaj%20Emrin]"
+                        target="_blank" class="rsvp-btn rsvp-no">
+                        Jo, nuk mundem
+                    </a>
+                </div>
+
+                <div class="thank-you-container">
+                    <p class="thank-you-text">Prania juaj do të jetë dhurata më e bukur për ne.</p>
+                    <p class="with-love-text">Me dashuri</p>
+                    <div class="couple-names-footer">Elsa & Bleon</div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="music-control" id="musicControl" style="display: none;" onclick="toggleMusic()">
+        🎵
+    </div>
+
+    <script>
+        function openEnvelope() {
+            document.getElementById('mainContainer').classList.add('opened');
+            document.getElementById('musicControl').style.display = 'flex';
+
+            var audio = document.getElementById('bg-music');
+            audio.play().catch(function (error) {
+                console.log("Autoplay u bllokua.");
+            });
+        }
+
+        function toggleMusic() {
+            var audio = document.getElementById('bg-music');
+            var control = document.getElementById('musicControl');
+            if (audio.paused) {
+                audio.play();
+                control.innerHTML = "🎵";
+            } else {
+                audio.pause();
+                control.innerHTML = "🔇";
+            }
+        }
+    </script>
+</body>
+
+</html>
